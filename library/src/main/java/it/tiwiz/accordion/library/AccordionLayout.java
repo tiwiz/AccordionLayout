@@ -1,5 +1,6 @@
 package it.tiwiz.accordion.library;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Parcelable;
@@ -87,6 +88,7 @@ public class AccordionLayout extends LinearLayout implements AccordionListener {
         setLayoutParams(internalParams);
     }
 
+    //TODO Animation: http://gmariotti.blogspot.it/2013/09/expand-and-collapse-animation.html
 
     @Override
     protected Parcelable onSaveInstanceState () {
