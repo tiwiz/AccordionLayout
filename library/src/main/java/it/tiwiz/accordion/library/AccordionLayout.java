@@ -8,10 +8,10 @@ import android.util.SparseArray;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-public class AccordionLayout extends LinearLayout implements AccordionListener{
+public class AccordionLayout extends LinearLayout implements AccordionListener {
 
-    private int layoutHeightWhenOpened = -1;
-    private AccordionHeader accordionHeader;
+    protected int layoutHeightWhenOpened = -1;
+    protected AccordionHeader accordionHeader;
 
     public AccordionLayout (Context context) {
         this(context, null);
@@ -27,23 +27,41 @@ public class AccordionLayout extends LinearLayout implements AccordionListener{
         createHeaderView(context, attrs, defStyleAttr);
     }
 
-    private void createHeaderView (Context context, AttributeSet attrs, int defStyleAttr) {
+    protected void createHeaderView (Context context, AttributeSet attrs, int defStyleAttr) {
         final XmlTagsBundle xmlBundle = loadXmlSettingsFrom(context, attrs);
-        accordionHeader = new AccordionHeader(context, attrs, defStyleAttr, this);
+        accordionHeader = new AccordionHeader(context, attrs, defStyleAttr, this, xmlBundle);
         addView(accordionHeader);
     }
 
-    private XmlTagsBundle loadXmlSettingsFrom (Context context, AttributeSet attrs) {
+    protected XmlTagsBundle loadXmlSettingsFrom (Context context, AttributeSet attrs) {
         XmlTagsBundle bundle = new XmlTagsBundle();
-//        TypedArray values = context.obtainStyledAttributes(attrs,)
-        return null;
+        try {
+            TypedArray values = context.obtainStyledAttributes(attrs, R.styleable.AccordionLayout);
+            // Honestly, I could have used less attributes
+            bundle.startCollapsed = values.getBoolean(R.styleable.AccordionLayout_startCollapsed, bundle.startCollapsed);
+            bundle.headerBackground = values.getInteger(R.styleable.AccordionLayout_header_background, bundle.headerBackground);
+            bundle.headerLayout = values.getInteger(R.styleable.AccordionLayout_header_layout, bundle.headerLayout);
+            bundle.headerLabel = values.getString(R.styleable.AccordionLayout_header_label);
+            bundle.headerTextColor = values.getColor(R.styleable.AccordionLayout_header_textColor, bundle.headerTextColor);
+            bundle.headerButtonBackground = values.getInteger(R.styleable.AccordionLayout_header_button_background, bundle.headerButtonBackground);
+            bundle.headerButtonOpenIcon = values.getInteger(R.styleable.AccordionLayout_header_button_openIcon, bundle.headerButtonOpenIcon);
+            bundle.headerButtonCloseIcon = values.getInteger(R.styleable.AccordionLayout_header_button_closeIcon, bundle.headerButtonCloseIcon);
+            bundle.headerButtonSize = values.getDimension(R.styleable.AccordionLayout_header_button_size, bundle.headerButtonSize);
+            values.recycle();
+        } catch (Exception e) {
+            //Avoids crashes with some devices in case attributes are not declared
+        }
+        bundle.fixPossibleNullData();
+        return bundle;
     }
 
     @Override
     protected void onLayout (boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        if (layoutHeightWhenOpened == -1)
+
+        if (layoutHeightWhenOpened == -1){
             layoutHeightWhenOpened = getMeasuredHeight();
+        }
 
         if (accordionHeader.getAccordionCollapsedState()) {
             onAccordionOpen();
@@ -62,7 +80,7 @@ public class AccordionLayout extends LinearLayout implements AccordionListener{
         adjustLayoutHeightTo(accordionHeader.getHeaderHeight());
     }
 
-    private void adjustLayoutHeightTo(int newHeight) {
+    private void adjustLayoutHeightTo (int newHeight) {
         RelativeLayout.LayoutParams internalParams = (RelativeLayout.LayoutParams) getLayoutParams();
         internalParams.height = newHeight;
         setLayoutParams(internalParams);

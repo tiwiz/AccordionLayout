@@ -17,6 +17,7 @@ class XmlTagsBundle implements Parcelable {
     int headerButtonBackground = HEADER_BUTTON_BACKGROUND;
     int headerButtonOpenIcon = HEADER_OPEN_ICON;
     int headerButtonCloseIcon = HEADER_CLOSE_ICON;
+    float headerButtonSize = HEADER_BUTTON_SIZE_IN_DPS;
     String headerLabel = HEADER_LABEL;
 
     @Override
@@ -27,6 +28,12 @@ class XmlTagsBundle implements Parcelable {
     @Override
     public void writeToParcel (Parcel dest, int flags) {
 
+    }
+
+    public void fixPossibleNullData() {
+        if (headerLabel == null) {
+            headerLabel = HEADER_LABEL;
+        }
     }
 
 }

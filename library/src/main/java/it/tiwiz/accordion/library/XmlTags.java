@@ -16,6 +16,7 @@ class XmlTags {
         protected static final int HEADER_BUTTON_BACKGROUND = R.drawable.header_button_background;
         protected static final int HEADER_OPEN_ICON = R.drawable.ic_header_open;
         protected static final int HEADER_CLOSE_ICON = R.drawable.ic_header_close;
+        protected static final float HEADER_BUTTON_SIZE_IN_DPS = 48f;
     }
 
     static class Utils {

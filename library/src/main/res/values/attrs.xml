@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="AccordionLayout">
-        <attr name="collapsedStart" format="enum">
-            <enum name="closed" value="0"/>
-            <enum name="open" value="1"/>
-        </attr>
+        <attr name="startCollapsed" format="boolean|reference" />
         <attr name="header_layout" format="integer|reference"/>
         <attr name="header_background" format="integer|reference"/>
         <attr name="header_label" format="string|reference" />
@@ -12,5 +9,6 @@
         <attr name="header_button_background" format="integer|reference" />
         <attr name="header_button_openIcon" format="integer|reference" />
         <attr name="header_button_closeIcon" format="integer|reference" />
+        <attr name="header_button_size" format="dimension|reference" />
     </declare-styleable>
 </resources>
