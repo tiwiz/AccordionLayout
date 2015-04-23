@@ -2,25 +2,26 @@ package it.tiwiz.accordion.library;
 
 
 import android.content.Context;
-import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
-import static it.tiwiz.accordion.library.AccordionCommon.*;
-import static it.tiwiz.accordion.library.AccordionCommon.BUTTON_DEFAULT_SIZE;
 
 /**
  * @gide
  */
 class AccordionHeader extends RelativeLayout implements View.OnClickListener{
 
+    private XmlTagsBundle bundle;
     private boolean isAccordionOpen = true;
-    private int headerLabelLayoutId = R.layout.accordion_header_label_default;
-    private int btnOpenCloseAccordionSize = -1;
     private AccordionListener accordionListener;
+    private ImageButton btnOpenCloseAccordion;
+    private OpenCloseDrawable buttonDrawable;
 
     public AccordionHeader (Context context) {
         this(context, null);
@@ -31,44 +32,51 @@ class AccordionHeader extends RelativeLayout implements View.OnClickListener{
     }
 
     public AccordionHeader (Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, null);
+        this(context, attrs, defStyleAttr, null, new XmlTagsBundle());
     }
 
-
-    public AccordionHeader (Context context, AttributeSet attrs, int defStyleAttr, AccordionListener accordionListener) {
+    public AccordionHeader (Context context, AttributeSet attrs, int defStyleAttr,
+                            @Nullable AccordionListener accordionListener,
+                            @NonNull XmlTagsBundle bundle) {
         super(context, attrs, defStyleAttr);
-
+        this.bundle = bundle;
+        isAccordionOpen = !bundle.startCollapsed;
+        buttonDrawable = new OpenCloseDrawable(context, bundle.headerButtonOpenIcon, bundle.headerButtonCloseIcon);
         setAccordionListener(accordionListener);
-        btnOpenCloseAccordionSize = convertDipsToPixels(context, BUTTON_DEFAULT_SIZE);
         generateLayoutParamsForHeader();
 
-        inflateHeaderLabelFrom(context, headerLabelLayoutId);
-        createOpenCloseAccordionButtonFrom(context, btnOpenCloseAccordionSize);
+        inflateHeaderLabelFrom(context);
+        createOpenCloseAccordionButtonFrom(context);
 
-        isAccordionOpen = false;
     }
 
-
-    private void generateLayoutParamsForHeader () {
-        LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, btnOpenCloseAccordionSize);
+    protected void generateLayoutParamsForHeader () {
+        LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, bundle.headerButtonSize);
         setLayoutParams(layoutParams);
     }
 
-    private void createOpenCloseAccordionButtonFrom (Context context, int btnOpenCloseAccordionSize) {
-        LayoutParams buttonParams = new LayoutParams(btnOpenCloseAccordionSize, btnOpenCloseAccordionSize);
+    protected void createOpenCloseAccordionButtonFrom (Context context) {
+        LayoutParams buttonParams = new LayoutParams(bundle.headerButtonSize, bundle.headerButtonSize);
         buttonParams.addRule(ALIGN_PARENT_TOP);
         buttonParams.addRule(ALIGN_PARENT_RIGHT);
-        ImageButton btnOpenCloseAccordion = new ImageButton(context);
+        btnOpenCloseAccordion = new ImageButton(context);
+        btnOpenCloseAccordion.setImageDrawable(getDrawableForCollapsedState());
+        Drawable background = DrawableHelper.getDrawableFrom(context, bundle.headerButtonBackground);
+        btnOpenCloseAccordion.setBackground(background);
         btnOpenCloseAccordion.setLayoutParams(buttonParams);
         btnOpenCloseAccordion.setOnClickListener(this);
         addView(btnOpenCloseAccordion);
     }
 
-    private void inflateHeaderLabelFrom (Context context, int headerLabelLayoutId) {
+    private Drawable getDrawableForCollapsedState () {
+        return buttonDrawable.getDrawableFor(isAccordionOpen);
+    }
+
+    protected void inflateHeaderLabelFrom (Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
         LayoutParams headerLayoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         headerLayoutParams.addRule(ALIGN_PARENT_TOP);
-        View headerView = inflater.inflate(headerLabelLayoutId, this, false);
+        View headerView = inflater.inflate(bundle.headerLayout, this, false);
         headerView.setLayoutParams(headerLayoutParams);
         headerView.setOnClickListener(this);
         addView(headerView);
@@ -87,22 +95,28 @@ class AccordionHeader extends RelativeLayout implements View.OnClickListener{
         }
     }
 
-    private void closeAccordion () {
+    protected void closeAccordion () {
         isAccordionOpen = false;
+        updateButtonBackground();
         if (accordionListener != null) {
             accordionListener.onAccordionClose();
         }
     }
 
-    private void openAccordion () {
+    protected void openAccordion () {
         isAccordionOpen = true;
+        updateButtonBackground();
         if (accordionListener != null) {
             accordionListener.onAccordionOpen();
         }
     }
 
+    private void updateButtonBackground () {
+        btnOpenCloseAccordion.setImageDrawable(getDrawableForCollapsedState());
+    }
+
     public int getHeaderHeight() {
-        return btnOpenCloseAccordionSize;
+        return bundle.headerButtonSize;
     }
 
     public boolean getAccordionCollapsedState() {
@@ -112,6 +126,4 @@ class AccordionHeader extends RelativeLayout implements View.OnClickListener{
     public void setAccordianCollapsedState(boolean isAccordionOpen) {
         this.isAccordionOpen = isAccordionOpen;
     }
-
-
 }

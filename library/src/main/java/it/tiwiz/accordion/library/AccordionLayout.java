@@ -46,12 +46,13 @@ public class AccordionLayout extends LinearLayout implements AccordionListener {
             bundle.headerButtonBackground = values.getInteger(R.styleable.AccordionLayout_header_button_background, bundle.headerButtonBackground);
             bundle.headerButtonOpenIcon = values.getInteger(R.styleable.AccordionLayout_header_button_openIcon, bundle.headerButtonOpenIcon);
             bundle.headerButtonCloseIcon = values.getInteger(R.styleable.AccordionLayout_header_button_closeIcon, bundle.headerButtonCloseIcon);
-            bundle.headerButtonSize = values.getDimension(R.styleable.AccordionLayout_header_button_size, bundle.headerButtonSize);
+            float buttonSizeInDps = values.getDimension(R.styleable.AccordionLayout_header_button_size, bundle.defaultHeaderButtonSize);
+            bundle.headerButtonSize = XmlTags.Utils.convertDipsToPixels(context, buttonSizeInDps);
             values.recycle();
         } catch (Exception e) {
             //Avoids crashes with some devices in case attributes are not declared
         }
-        bundle.fixPossibleNullData();
+        bundle = XmlTags.Utils.fixPossibleNullData(context, bundle);
         return bundle;
     }
 
