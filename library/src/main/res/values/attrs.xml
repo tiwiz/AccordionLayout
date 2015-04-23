@@ -5,7 +5,7 @@
         <attr name="header_layout" format="integer|reference"/>
         <attr name="header_background" format="integer|reference"/>
         <attr name="header_label" format="string|reference" />
-        <attr name="header_textColor" format="integer|reference" />
+        <attr name="header_textStyle" format="integer|reference" />
         <attr name="header_button_background" format="integer|reference" />
         <attr name="header_button_openIcon" format="integer|reference" />
         <attr name="header_button_closeIcon" format="integer|reference" />

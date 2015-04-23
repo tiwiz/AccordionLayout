@@ -42,7 +42,7 @@ public class AccordionLayout extends LinearLayout implements AccordionListener {
             bundle.headerBackground = values.getInteger(R.styleable.AccordionLayout_header_background, bundle.headerBackground);
             bundle.headerLayout = values.getInteger(R.styleable.AccordionLayout_header_layout, bundle.headerLayout);
             bundle.headerLabel = values.getString(R.styleable.AccordionLayout_header_label);
-            bundle.headerTextColor = values.getColor(R.styleable.AccordionLayout_header_textColor, bundle.headerTextColor);
+            bundle.headerTextStyle = values.getColor(R.styleable.AccordionLayout_header_textStyle, bundle.headerTextStyle);
             bundle.headerButtonBackground = values.getInteger(R.styleable.AccordionLayout_header_button_background, bundle.headerButtonBackground);
             bundle.headerButtonOpenIcon = values.getInteger(R.styleable.AccordionLayout_header_button_openIcon, bundle.headerButtonOpenIcon);
             bundle.headerButtonCloseIcon = values.getInteger(R.styleable.AccordionLayout_header_button_closeIcon, bundle.headerButtonCloseIcon);

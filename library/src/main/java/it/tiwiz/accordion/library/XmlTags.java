@@ -6,6 +6,7 @@ import android.util.TypedValue;
 
 import static it.tiwiz.accordion.library.XmlTags.Defaults.HEADER_BUTTON_SIZE_IN_DPS;
 import static it.tiwiz.accordion.library.XmlTags.Defaults.HEADER_LABEL;
+import static it.tiwiz.accordion.library.XmlTags.Defaults.HEADER_LAYOUT;
 
 class XmlTags {
 
@@ -18,7 +19,7 @@ class XmlTags {
         protected static final int HEADER_LAYOUT = R.layout.accordion_header_label_default;
         protected static final int HEADER_BACKGROUND = R.drawable.header_button_background;
         protected static final String HEADER_LABEL = STRING_NOT_SET;
-        protected static final int HEADER_TEXTCOLOR = INT_NOT_SET;
+        protected static final int HEADER_TEXTSTYLE = INT_NOT_SET;
         protected static final int HEADER_BUTTON_BACKGROUND = R.drawable.header_button_background;
         protected static final int HEADER_OPEN_ICON = R.drawable.ic_header_open;
         protected static final int HEADER_CLOSE_ICON = R.drawable.ic_header_close;
@@ -34,6 +35,10 @@ class XmlTags {
 
         protected static boolean isSet(String valueToCheck) {
             return !valueToCheck.equalsIgnoreCase(Defaults.STRING_NOT_SET);
+        }
+
+        protected static boolean isDefaultLayoutForHeader(int headerLayoutId) {
+            return headerLayoutId == HEADER_LAYOUT;
         }
 
 

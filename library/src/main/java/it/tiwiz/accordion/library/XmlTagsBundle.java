@@ -13,7 +13,7 @@ class XmlTagsBundle implements Parcelable {
     boolean startCollapsed = START_COLLAPSED;
     int headerLayout = HEADER_LAYOUT;
     int headerBackground = HEADER_BACKGROUND;
-    int headerTextColor = HEADER_TEXTCOLOR;
+    int headerTextStyle = HEADER_TEXTSTYLE;
     int headerButtonBackground = HEADER_BUTTON_BACKGROUND;
     int headerButtonOpenIcon = HEADER_OPEN_ICON;
     int headerButtonCloseIcon = HEADER_CLOSE_ICON;

@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import static it.tiwiz.accordion.library.XmlTags.Utils.*;
 
 
 /**
@@ -76,10 +79,33 @@ class AccordionHeader extends RelativeLayout implements View.OnClickListener{
         LayoutInflater inflater = LayoutInflater.from(context);
         LayoutParams headerLayoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         headerLayoutParams.addRule(ALIGN_PARENT_TOP);
-        View headerView = inflater.inflate(bundle.headerLayout, this, false);
+        View headerView;
+        if (shallUseDefaultLayout()) {
+            headerView = inflateDefaultLayout(context, inflater);
+        } else {
+            headerView = inflater.inflate(bundle.headerLayout, this, false);
+        }
         headerView.setLayoutParams(headerLayoutParams);
         headerView.setOnClickListener(this);
         addView(headerView);
+    }
+
+    private boolean shallUseDefaultLayout () {
+        return isDefaultLayoutForHeader(bundle.headerLayout);
+    }
+
+    private View inflateDefaultLayout(Context context, LayoutInflater inflater) {
+        View headerView = inflater.inflate(bundle.headerLayout, this, false);
+        Drawable background = DrawableHelper.getDrawableFrom(context, bundle.headerBackground);
+        headerView.setBackground(background);
+        TextView label = (TextView) headerView.findViewById(R.id.accordionLabel);
+        if (isSet(bundle.headerLabel)) {
+            label.setText(bundle.headerLabel);
+        }
+        if (isSet(bundle.headerTextStyle)) {
+            label.setTextAppearance(context, bundle.headerTextStyle);
+        }
+        return headerView;
     }
 
     public void setAccordionListener(AccordionListener accordionListener) {
@@ -125,5 +151,6 @@ class AccordionHeader extends RelativeLayout implements View.OnClickListener{
 
     public void setAccordianCollapsedState(boolean isAccordionOpen) {
         this.isAccordionOpen = isAccordionOpen;
+        updateButtonBackground();
     }
 }
