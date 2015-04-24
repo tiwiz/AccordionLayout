@@ -1,40 +1,59 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
                 tools:context="it.tiwiz.accordion.TestActivity">
 
-    <it.tiwiz.accordion.library.AccordionLayout
-        android:id="@+id/accordion"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_blue_bright">
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
 
-        <TextView
+        <it.tiwiz.accordion.library.AccordionLayout
+            android:id="@+id/accordion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_blue_bright">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Lorem ipsum"/>
+
+        </it.tiwiz.accordion.library.AccordionLayout>
+
+
+        <it.tiwiz.accordion.library.AccordionLayout
+            android:id="@+id/accordion1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/accordion"
+            app:header_label="Show image"
+            app:startCollapsed="true">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/marvel_vs_dc"
+                android:background="@android:color/holo_red_dark"/>
+        </it.tiwiz.accordion.library.AccordionLayout>
+
+        <it.tiwiz.accordion.library.AccordionLayout
+            android:id="@+id/accordion2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Lorem ipsum"/>
+            android:layout_below="@id/accordion1">
 
-    </it.tiwiz.accordion.library.AccordionLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/marvel_vs_dc"
+                android:background="@android:color/holo_orange_dark"/>
+        </it.tiwiz.accordion.library.AccordionLayout>
 
-
-    <it.tiwiz.accordion.library.AccordionLayout
-        android:id="@+id/accordion1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/accordion"
-        app:header_label="Show image"
-        app:startCollapsed="true">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/marvel_vs_dc"/>
-    </it.tiwiz.accordion.library.AccordionLayout>
-
-</RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

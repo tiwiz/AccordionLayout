@@ -1,6 +1,5 @@
 package it.tiwiz.accordion.library;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Parcelable;
@@ -13,6 +12,8 @@ public class AccordionLayout extends LinearLayout implements AccordionListener {
 
     protected int layoutHeightWhenOpened = -1;
     protected AccordionHeader accordionHeader;
+
+    protected int headerLayout;
 
     public AccordionLayout (Context context) {
         this(context, null);
@@ -111,5 +112,13 @@ public class AccordionLayout extends LinearLayout implements AccordionListener {
     @Override
     protected void dispatchRestoreInstanceState (SparseArray<Parcelable> container) {
         dispatchThawSelfOnly(container);
+    }
+
+    public int getHeaderLayout () {
+        return accordionHeader.getHeaderLayout();
+    }
+
+    public void setHeaderLayout (int headerLayout) {
+        accordionHeader.setHeaderLayout(headerLayout);
     }
 }

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import it.tiwiz.accordion.library.AccordionLayout;
+
 
 public class TestActivity extends ActionBarActivity {
 
@@ -12,6 +14,9 @@ public class TestActivity extends ActionBarActivity {
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+
+        AccordionLayout accordionLayout = (AccordionLayout) findViewById(R.id.accordion2);
+        accordionLayout.setHeaderLayout(R.layout.test_header);
     }
 
 }

@@ -25,6 +25,8 @@ class AccordionHeader extends RelativeLayout implements View.OnClickListener{
     private AccordionListener accordionListener;
     private ImageButton btnOpenCloseAccordion;
     private OpenCloseDrawable buttonDrawable;
+    private View headerView;
+    private Context context;
 
     public AccordionHeader (Context context) {
         this(context, null);
@@ -42,14 +44,15 @@ class AccordionHeader extends RelativeLayout implements View.OnClickListener{
                             @Nullable AccordionListener accordionListener,
                             @NonNull XmlTagsBundle bundle) {
         super(context, attrs, defStyleAttr);
+        this.context = context;
         this.bundle = bundle;
         isAccordionOpen = !bundle.startCollapsed;
         buttonDrawable = new OpenCloseDrawable(context, bundle.headerButtonOpenIcon, bundle.headerButtonCloseIcon);
         setAccordionListener(accordionListener);
         generateLayoutParamsForHeader();
 
-        inflateHeaderLabelFrom(context);
-        createOpenCloseAccordionButtonFrom(context);
+        inflateHeaderLabel();
+        createOpenCloseAccordionButton();
 
     }
 
@@ -58,30 +61,33 @@ class AccordionHeader extends RelativeLayout implements View.OnClickListener{
         setLayoutParams(layoutParams);
     }
 
-    protected void createOpenCloseAccordionButtonFrom (Context context) {
+    protected void createOpenCloseAccordionButton () {
         LayoutParams buttonParams = new LayoutParams(bundle.headerButtonSize, bundle.headerButtonSize);
         buttonParams.addRule(ALIGN_PARENT_TOP);
         buttonParams.addRule(ALIGN_PARENT_RIGHT);
         btnOpenCloseAccordion = new ImageButton(context);
         btnOpenCloseAccordion.setImageDrawable(getDrawableForCollapsedState());
-        Drawable background = DrawableHelper.getDrawableFrom(context, bundle.headerButtonBackground);
-        btnOpenCloseAccordion.setBackground(background);
+        resetHeaderButtonBackground();
         btnOpenCloseAccordion.setLayoutParams(buttonParams);
         btnOpenCloseAccordion.setOnClickListener(this);
         addView(btnOpenCloseAccordion);
+    }
+
+    private void resetHeaderButtonBackground () {
+        Drawable background = DrawableHelper.getDrawableFrom(context, bundle.headerButtonBackground);
+        btnOpenCloseAccordion.setBackground(background);
     }
 
     private Drawable getDrawableForCollapsedState () {
         return buttonDrawable.getDrawableFor(isAccordionOpen);
     }
 
-    protected void inflateHeaderLabelFrom (Context context) {
+    protected void inflateHeaderLabel () {
         LayoutInflater inflater = LayoutInflater.from(context);
         LayoutParams headerLayoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         headerLayoutParams.addRule(ALIGN_PARENT_TOP);
-        View headerView;
         if (shallUseDefaultLayout()) {
-            headerView = inflateDefaultLayout(context, inflater);
+            headerView = inflateDefaultLayoutFrom(inflater);
         } else {
             headerView = inflater.inflate(bundle.headerLayout, this, false);
         }
@@ -94,7 +100,7 @@ class AccordionHeader extends RelativeLayout implements View.OnClickListener{
         return isDefaultLayoutForHeader(bundle.headerLayout);
     }
 
-    private View inflateDefaultLayout(Context context, LayoutInflater inflater) {
+    private View inflateDefaultLayoutFrom(LayoutInflater inflater) {
         View headerView = inflater.inflate(bundle.headerLayout, this, false);
         Drawable background = DrawableHelper.getDrawableFrom(context, bundle.headerBackground);
         headerView.setBackground(background);
@@ -152,5 +158,15 @@ class AccordionHeader extends RelativeLayout implements View.OnClickListener{
     public void setAccordianCollapsedState(boolean isAccordionOpen) {
         this.isAccordionOpen = isAccordionOpen;
         updateButtonBackground();
+    }
+
+    public int getHeaderLayout () {
+        return bundle.headerLayout;
+    }
+    
+    public void setHeaderLayout (int headerLayout) {
+        bundle.headerLayout = headerLayout;
+        inflateHeaderLabel();
+        bringChildToFront(btnOpenCloseAccordion);
     }
 }
