@@ -88,8 +88,6 @@ public class AccordionLayout extends LinearLayout implements AccordionListener {
         setLayoutParams(internalParams);
     }
 
-    //TODO Animation: http://gmariotti.blogspot.it/2013/09/expand-and-collapse-animation.html
-
     @Override
     protected Parcelable onSaveInstanceState () {
         Parcelable superState = super.onSaveInstanceState();
